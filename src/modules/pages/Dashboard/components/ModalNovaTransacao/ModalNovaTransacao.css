@@ -1,0 +1,58 @@
+.form-nova-transacao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campo-grupo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo-rotulo {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+.campo-input-texto, .campo-select {
+  padding: 10px 14px;
+  border-radius: var(--raio-cartao-pequeno);
+  border: 1px solid var(--borda-suave);
+  background: #f8fafc;
+  color: var(--cor-texto-principal);
+  font-size: 13.5px;
+  outline: none;
+  transition: all var(--transicao-rapida);
+}
+
+.campo-input-texto:focus, .campo-select:focus {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(24, 25, 31, 0.05);
+}
+
+.seletor-tipo-operacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.btn-opcao-tipo {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.btn-opcao-tipo.selecionado {
+  background: var(--cor-superficie-escura);
+  color: #ffffff;
+}

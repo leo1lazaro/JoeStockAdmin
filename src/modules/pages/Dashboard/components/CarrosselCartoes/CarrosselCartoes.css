@@ -1,0 +1,142 @@
+.deck-cartoes-container {
+  padding: 10px 16px 24px;
+  position: relative;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.deck-cartoes-container::-webkit-scrollbar {
+  display: none;
+}
+
+.deck-cartoes-linha {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 820px;
+  height: 180px;
+  position: relative;
+  padding: 0 10px;
+}
+
+/* Card Individual Estilizado com Efeito 3D e Neumórfico */
+.cartao-deck-item {
+  position: relative;
+  width: 175px;
+  height: 130px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07), 0 2px 6px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, z-index 0.3s ease;
+  user-select: none;
+  margin-left: -35px;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cartao-deck-item:first-child {
+  margin-left: 0;
+}
+
+/* Cartão Ativo / Em Destaque (GPay Ouro no centro) */
+.cartao-deck-item.ativo {
+  z-index: 10;
+  width: 195px;
+  height: 155px;
+  transform: translateY(-16px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(180, 160, 120, 0.25), 0 6px 14px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+}
+
+.cartao-deck-item:hover:not(.ativo) {
+  transform: translateY(-8px);
+  z-index: 8;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Topo do Cartão */
+.cartao-deck-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cartao-deck-tipo-texto {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  letter-spacing: -0.01em;
+}
+
+.cartao-deck-brand-logo {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cor-texto-titulo);
+}
+
+/* Centro / Ícone Contactless */
+.cartao-deck-centro {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4px;
+}
+
+.icone-contactless {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Rodapé do Cartão */
+.cartao-deck-rodape {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.cartao-deck-subtexto {
+  font-size: 10px;
+  color: var(--cor-texto-mutado);
+  font-weight: 500;
+}
+
+.cartao-deck-taxa {
+  font-size: 9.5px;
+  color: var(--cor-texto-secundario);
+  font-weight: 600;
+}
+
+/* Variantes de cores do gradiente dos cartões */
+.cartao-tema-ouro {
+  background: linear-gradient(135deg, #fbf7ee 0%, #f4e8cc 50%, #e7d5af 100%);
+}
+
+.cartao-tema-debit {
+  background: linear-gradient(135deg, #f8f9fa 0%, #edf1f7 100%);
+}
+
+.cartao-tema-platinum {
+  background: linear-gradient(135deg, #f0f3f6 0%, #dfe4ea 100%);
+}
+
+.cartao-tema-stripe {
+  background: linear-gradient(135deg, #fdfdfd 0%, #f0f3f8 100%);
+}
+
+.cartao-tema-apple {
+  background: linear-gradient(135deg, #ffffff 0%, #f4f6f8 100%);
+}
+
+.cartao-tema-silver {
+  background: linear-gradient(135deg, #f3f5f8 0%, #e2e6ed 100%);
+}

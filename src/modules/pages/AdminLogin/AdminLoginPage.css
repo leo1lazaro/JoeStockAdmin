@@ -1,0 +1,107 @@
+.pagina-login-admin {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--cor-fundo-dashboard);
+}
+
+.cartao-login-admin {
+  width: min(100%, 420px);
+  padding: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--sombra-elevada);
+}
+
+.marca-login-admin {
+  margin-bottom: 32px;
+  color: var(--cor-texto-titulo);
+  font-family: var(--fonte-display);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.sobretitulo-login-admin {
+  margin-bottom: 6px;
+  color: var(--cor-texto-secundario);
+  font-size: 13px;
+}
+
+.cartao-login-admin h1 {
+  font-size: 26px;
+}
+
+.descricao-login-admin {
+  margin: 8px 0 24px;
+  color: var(--cor-texto-secundario);
+  font-size: 14px;
+}
+
+.formulario-login-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario-login-admin label {
+  margin-top: 8px;
+  color: var(--cor-texto-principal);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.formulario-login-admin input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--borda-destaque);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.formulario-login-admin button {
+  min-height: 46px;
+  margin-top: 14px;
+  border-radius: 10px;
+  background: var(--cor-superficie-escura);
+  color: #fff;
+  font-weight: 700;
+}
+
+.formulario-login-admin button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.erro-login-admin {
+  margin-top: 4px;
+  color: var(--cor-perigo);
+  font-size: 13px;
+}
+
+.estado-autenticacao {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+}
+
+.estado-autenticacao button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--cor-superficie-escura);
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .cartao-login-admin {
+    padding: 28px 22px;
+  }
+}

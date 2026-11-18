@@ -1,0 +1,53 @@
+/* ==========================================================================
+   ESTILOS PRÓPRIOS DA PÁGINA DASHBOARD
+   Layout da página do dashboard
+   ========================================================================== */
+
+.pagina-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Grade de Gráficos e Transações */
+.grade-conteudo-inferior {
+  display: grid;
+  grid-template-columns: 44fr 56fr;
+  gap: 16px;
+  padding: 0 16px 32px;
+  flex: 1;
+}
+
+.coluna-inferior-esquerda {
+  display: flex;
+  flex-direction: column;
+}
+
+.coluna-inferior-direita {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.linha-graficos-superiores-direita {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Responsividade */
+@media (max-width: 1280px) {
+  .grade-conteudo-inferior {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grade-conteudo-inferior {
+    padding: 0 8px 20px;
+  }
+  .linha-graficos-superiores-direita {
+    grid-template-columns: 1fr;
+  }
+}

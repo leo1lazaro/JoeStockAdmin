@@ -1,0 +1,67 @@
+.card-visao-mensal {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+  position: relative;
+}
+
+.cabecalho-visao-mensal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.titulo-card-mensal {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+/* Área do Gráfico de Ondas Senoidais */
+.area-ondas-senoidais {
+  position: relative;
+  width: 100%;
+  height: 95px;
+  margin: 6px 0 2px 0;
+}
+
+.svg-ondas-senoidais {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.badge-pico-flutuante {
+  position: absolute;
+  top: 6px;
+  right: 18%;
+  background: #18191f;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--raio-pilula);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 5;
+}
+
+/* Eixo de Meses Inferior */
+.eixo-meses-mensal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 4px;
+}
+
+.rotulo-mes-pequeno {
+  font-size: 10px;
+  color: var(--cor-texto-mutado);
+  font-weight: 500;
+}

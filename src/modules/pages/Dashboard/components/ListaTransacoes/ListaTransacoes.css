@@ -1,0 +1,183 @@
+.card-lista-transacoes {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+  height: 100%;
+}
+
+.cabecalho-transacoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.titulo-card-transacoes {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+.controles-cabecalho-transacoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icone-transacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--cor-texto-secundario);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.btn-icone-transacao:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--cor-texto-principal);
+}
+
+.btn-ver-todas {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--raio-pilula);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.btn-ver-todas:hover {
+  background: #ffffff;
+  color: var(--cor-texto-principal);
+}
+
+.divisor-data-transacoes {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cor-texto-mutado);
+  margin-bottom: 10px;
+}
+
+/* Lista de Itens */
+.itens-transacoes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-transacao-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  transition: all var(--transicao-rapida);
+}
+
+.lado-esquerdo-transacao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icone-empresa-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Ícones das marcas específicas */
+.icone-starbucks {
+  background: #00704A;
+  color: #ffffff;
+}
+
+.icone-netflix {
+  background: #ffffff;
+  color: #E50914;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.icone-apple {
+  background: #111111;
+  color: #ffffff;
+}
+
+.icone-slack {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detalhes-empresa-transacao {
+  display: flex;
+  flex-direction: column;
+}
+
+.nome-empresa-transacao {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+.categoria-data-transacao {
+  font-size: 11px;
+  color: var(--cor-texto-mutado);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lado-direito-transacao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.valor-transacao-item {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.valor-transacao-item.positivo {
+  color: #10b981;
+}
+
+.valor-transacao-item.negativo {
+  color: var(--cor-texto-titulo);
+}
+
+.tipo-subtexto-transacao {
+  font-size: 10px;
+  color: var(--cor-texto-mutado);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tipo-subtexto-transacao.verde {
+  color: #10b981;
+}
+
+.tipo-subtexto-transacao.vermelho {
+  color: #ef4444;
+}

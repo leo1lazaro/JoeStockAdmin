@@ -1,0 +1,148 @@
+/* ==========================================================================
+   CSS GLOBAL PADRÃO - 21X0 ANALYTICS DASHBOARD
+   Base completa em CSS puro: variáveis, reset, tipografia, cores e utilitários
+   ========================================================================== */
+
+:root {
+  /* Paleta de Cores do Tema */
+  --cor-fundo-externo: #d7dbe2;
+  --cor-fundo-dashboard: #f3f5f9;
+  --cor-fundo-secundario: #ebedf2;
+  --cor-superficie-branca: #ffffff;
+  --cor-superficie-escura: #18191f;
+
+  /* Cores de Texto */
+  --cor-texto-titulo: #12151b;
+  --cor-texto-principal: #1e2430;
+  --cor-texto-secundario: #6e7687;
+  --cor-texto-mutado: #9ba3b2;
+  --cor-texto-claro: #ffffff;
+
+  /* Estados e Semântica */
+  --cor-sucesso: #10b981;
+  --cor-sucesso-suave: #ecfdf5;
+  --cor-perigo: #f43f5e;
+  --cor-perigo-suave: #fff1f2;
+  --cor-aviso: #f59e0b;
+  --cor-aviso-suave: #fffbeb;
+  --cor-info: #3b82f6;
+
+  /* Acentos dos Cartões */
+  --cor-cartao-ouro: linear-gradient(135deg, #f7eed9 0%, #ecd9b5 50%, #e2c694 100%);
+  --cor-cartao-escuro: linear-gradient(145deg, #23272e 0%, #15181d 100%);
+  --cor-cartao-prata: linear-gradient(135deg, #f5f6f8 0%, #e5e8ec 100%);
+
+  /* Bordas e Divisores */
+  --borda-suave: rgba(0, 0, 0, 0.05);
+  --borda-branca-sutil: rgba(255, 255, 255, 0.7);
+  --borda-destaque: rgba(0, 0, 0, 0.1);
+
+  /* Sombras Sofisticadas Neumórficas / Glass */
+  --sombra-dashboard: 0 30px 80px rgba(35, 45, 65, 0.14), 0 10px 30px rgba(0, 0, 0, 0.05);
+  --sombra-cartao-suave: 0 4px 14px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --sombra-elevada: 0 12px 28px rgba(18, 22, 33, 0.08);
+  --sombra-botao-ativo: 0 4px 12px rgba(24, 25, 31, 0.25);
+  --sombra-neumorfica: 3px 3px 8px rgba(160, 172, 192, 0.2), -3px -3px 8px rgba(255, 255, 255, 0.9);
+
+  /* Raios de Arredondamento */
+  --raio-dashboard: 32px;
+  --raio-cartao-grande: 24px;
+  --raio-cartao-medio: 18px;
+  --raio-cartao-pequeno: 12px;
+  --raio-pilula: 9999px;
+
+  /* Tipografia */
+  --fonte-principal: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --fonte-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+  /* Transições Padrão */
+  --transicao-rapida: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transicao-suave: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--fonte-principal);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--cor-texto-principal);
+  background: var(--cor-fundo-externo);
+  background-image: 
+    radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(180, 190, 205, 0.4) 0%, transparent 50%),
+    linear-gradient(135deg, #e3e7ee 0%, #cfd5de 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
+  transition: all var(--transicao-rapida);
+}
+
+button:focus-visible {
+  outline: 2px solid rgba(24, 25, 31, 0.35);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Tipografia e Títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+  letter-spacing: -0.02em;
+}
+
+/* Tabular numbers para valores financeiros */
+.tabular-numeros {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Responsividade Básica */
+@media (max-width: 1200px) {
+  :root {
+    --raio-dashboard: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --raio-dashboard: 16px;
+  }
+}
+
+/* Remove as setas dos inputs numericos */
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

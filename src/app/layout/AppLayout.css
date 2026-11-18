@@ -1,0 +1,33 @@
+.app-layout-base {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.moldura-dashboard-central {
+  width: 100%;
+  min-height: 100vh;
+  background: #f4f6fa;
+  display: flex;
+  position: relative;
+}
+
+.conteudo-principal-painel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #f5f7fa;
+}
+
+.conteudo-rota-dashboard {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .moldura-dashboard-central {
+    flex-direction: column;
+  }
+}

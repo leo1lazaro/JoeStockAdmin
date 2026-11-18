@@ -1,0 +1,4 @@
+.CampoFormulario { display: grid; gap: 8px; font-size: 13px; color: var(--cor-texto-principal); }
+.CampoFormulario input:not([type=checkbox]), .CampoFormulario textarea { width: 100%; padding: 12px; border: 1px solid #d4ded6; border-radius: 8px; background: white; color: #1e3027; font: inherit; }
+.CampoFormulario textarea { min-height: 110px; resize: vertical; }
+.CampoFormulario input:focus-visible, .CampoFormulario textarea:focus-visible { outline: 2px solid #2f7653; outline-offset: 2px; }

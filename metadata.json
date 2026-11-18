@@ -1,0 +1,6 @@
+{
+  "name": "21X0 Analytics Dashboard",
+  "description": "Painel analítico financeiro 21X0 com gestão de cartões, fluxo de caixa e transações.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

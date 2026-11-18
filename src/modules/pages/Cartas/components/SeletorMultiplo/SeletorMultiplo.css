@@ -1,0 +1,36 @@
+.seletor-multiplo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.seletor-multiplo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--raio-pilula);
+  border: 1px solid var(--borda-destaque);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.seletor-multiplo-chip:hover {
+  border-color: rgba(24, 25, 31, 0.4);
+  color: var(--cor-texto-principal);
+}
+
+.seletor-multiplo-chip.ativo {
+  background: var(--cor-superficie-escura);
+  border-color: var(--cor-superficie-escura);
+  color: #fff;
+}
+
+.seletor-multiplo-vazio {
+  font-size: 13px;
+  color: var(--cor-texto-mutado);
+}

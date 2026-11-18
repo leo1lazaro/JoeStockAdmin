@@ -1,0 +1,115 @@
+.card-gastos-semanais {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+.cabecalho-gastos-semanais {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.titulo-card-gastos {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+.btn-icone-link-diagonal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--cor-texto-secundario);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.btn-icone-link-diagonal:hover {
+  background: var(--cor-superficie-escura);
+  color: #ffffff;
+}
+
+/* Legenda */
+.legenda-gastos-semanais {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 8px;
+}
+
+.item-legenda-ponto {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ponto-marcador {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.ponto-marcador.escuro {
+  background: #18191f;
+}
+
+.ponto-marcador.cinza {
+  background: #d1d5db;
+}
+
+/* Arco Gauge Semicircular */
+.area-arco-gauge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 70px;
+  margin: 4px 0;
+}
+
+.svg-arco-gauge {
+  width: 130px;
+  height: 70px;
+}
+
+/* Estatísticas Inferiores */
+.rodape-estatisticas-gastos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.coluna-dado-gasto {
+  display: flex;
+  flex-direction: column;
+}
+
+.linha-porcentagem-gasto {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--cor-texto-titulo);
+}
+
+.subtexto-gasto-total {
+  font-size: 9.5px;
+  color: var(--cor-texto-mutado);
+}

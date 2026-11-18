@@ -1,0 +1,83 @@
+.container-metricas-resumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0 16px 24px;
+}
+
+.card-metrica-item {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all var(--transicao-rapida);
+}
+
+.card-metrica-item:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+}
+
+.metrica-titulo-rotulo {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  margin-bottom: 8px;
+}
+
+.metrica-corpo-linha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.metrica-valor-principal {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cor-texto-titulo);
+  letter-spacing: -0.02em;
+}
+
+.metrica-badge-variacao {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--raio-pilula);
+}
+
+.metrica-badge-variacao.alta {
+  color: #10b981;
+}
+
+.metrica-badge-variacao.baixa {
+  color: #f43f5e;
+}
+
+.metrica-sparkline-svg {
+  width: 55px;
+  height: 24px;
+  stroke: rgba(0, 0, 0, 0.25);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+@media (max-width: 1100px) {
+  .container-metricas-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .container-metricas-resumo {
+    grid-template-columns: 1fr;
+  }
+}

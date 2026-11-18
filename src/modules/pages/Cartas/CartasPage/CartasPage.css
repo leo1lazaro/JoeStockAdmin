@@ -1,0 +1,77 @@
+.cartas-filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cartas-filtro-busca {
+  grid-column: 1 / -1;
+}
+
+.carta-celula-nome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carta-celula-nome strong {
+  display: block;
+  font-weight: 600;
+}
+
+.carta-celula-nome small {
+  display: block;
+  font-size: 12px;
+  color: var(--cor-texto-mutado);
+}
+
+.carta-miniatura {
+  width: 40px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--cor-fundo-secundario);
+  flex-shrink: 0;
+}
+
+.carta-miniatura-vazia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto-mutado);
+}
+
+.carta-texto {
+  max-width: 520px;
+  color: var(--cor-texto-secundario);
+  font-size: 13px;
+}
+
+.cartas-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--cor-texto-secundario);
+}
+
+.cartas-paginacao-tamanho,
+.cartas-paginacao-navegacao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cartas-paginacao-tamanho .select-gatilho {
+  min-width: 80px;
+}
+
+.cartas-paginacao button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

@@ -1,0 +1,28 @@
+.Comercio { padding: 24px; display: grid; gap: 24px; }
+.Comercio-cabecalho { display: flex; justify-content: space-between; gap: 20px; align-items: center; flex-wrap: wrap; }
+.Comercio-cabecalho h1 { font-size: 30px; margin: 8px 0; }
+.Comercio-cabecalho p { color: #587062; }
+.Comercio-marca { letter-spacing: 2px; font-size: 11px; font-weight: 700; }
+.Comercio-card, .Comercio-estado { padding: 24px; border: 1px solid #d9e4dd; border-radius: 16px; background: #fff; }
+.Comercio-estado { text-align: center; display: grid; gap: 16px; justify-items: center; }
+.Comercio-metricas { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+.Comercio-metrica { padding: 24px; background: #102d22; color: #e8f2eb; border-radius: 14px; display: grid; gap: 16px; }
+.Comercio-metrica strong { font-size: 30px; color: #9be4b0; }
+.Comercio-ferramentas { display: flex; gap: 16px; align-items: end; flex-wrap: wrap; }
+.Comercio-ferramentas > * { min-width: 200px; }
+.Comercio-tabela-container { width: 100%; overflow-x: auto; }
+.Comercio-tabela { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+.Comercio-tabela th { color: #607869; font-size: 12px; font-weight: 600; }
+.Comercio-tabela td, .Comercio-tabela th { padding: 16px 12px; border-bottom: 1px solid #e7eee9; vertical-align: middle; }
+.Comercio-tabela small { display: block; color: #6b7e72; margin-top: 5px; }
+.Comercio-status { display: inline-block; background: #e5f0e8; color: #23533a; border-radius: 20px; padding: 6px 10px; font-size: 12px; }
+.Comercio-formulario { display: grid; gap: 18px; }
+.Comercio-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.Comercio-selecao { display: grid; gap: 8px; font-size: 13px; }
+.Comercio-acoes { display: flex; flex-wrap: wrap; gap: 10px; }
+.Comercio-alerta { color: #a13724; }
+.Comercio-detalhes { display: grid; gap: 18px; }
+.Comercio-detalhes p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.Comercio-atalhos { display: flex; gap: 16px; flex-wrap: wrap; }
+.Comercio-atalhos a { color: #286442; border: 1px solid #c8ddce; border-radius: 10px; padding: 16px; text-decoration: none; }
+@media(max-width: 650px) { .Comercio { padding: 16px; } .Comercio-linha { grid-template-columns: 1fr; } }

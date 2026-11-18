@@ -1,0 +1,162 @@
+.card-grafico-renda-despesas {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 22px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+  height: 100%;
+}
+
+.cabecalho-grafico-espelho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.titulo-secao-grafico {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cor-texto-titulo);
+}
+
+.seletor-periodo-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--raio-pilula);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+}
+
+.seletor-periodo-dropdown:hover {
+  background: #ffffff;
+  color: var(--cor-texto-principal);
+}
+
+/* Blocos de Valor Superior e Inferior */
+.bloco-valor-central {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.subtitulo-renda-despesa {
+  font-size: 12px;
+  color: var(--cor-texto-secundario);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.grande-valor-destaque {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cor-texto-titulo);
+  letter-spacing: -0.03em;
+}
+
+/* Área do Equalizador Espelhado */
+.area-equalizador-espelhado {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.linha-meses-eixo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  z-index: 5;
+  padding: 4px 0;
+}
+
+.rotulo-mes-eixo {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cor-texto-mutado);
+  width: 36px;
+  text-align: center;
+}
+
+.rotulo-mes-eixo.ativo {
+  color: var(--cor-texto-principal);
+  font-weight: 600;
+}
+
+/* Barras do Gráfico */
+.colunas-barras-grafico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  position: relative;
+}
+
+.coluna-mes-equalizador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 36px;
+}
+
+.grupo-barras-topo, .grupo-barras-base {
+  display: flex;
+  gap: 2.5px;
+  align-items: flex-end;
+}
+
+.grupo-barras-base {
+  align-items: flex-start;
+}
+
+.barra-linha {
+  width: 3px;
+  border-radius: 2px;
+  background: #e2e8f0;
+  transition: height 0.3s ease;
+}
+
+/* Destaque do Mês de Abril */
+.coluna-mes-equalizador.destaque .barra-linha.topo {
+  background: #18191f;
+  width: 3.5px;
+}
+
+.coluna-mes-equalizador.destaque .barra-linha.base {
+  background: #f87171;
+  width: 3.5px;
+}
+
+/* Badges de Destaque Flutuante */
+.tag-valor-flutuante {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tag-valor-flutuante.topo {
+  top: -24px;
+  color: var(--cor-texto-principal);
+}
+
+.tag-valor-flutuante.base {
+  bottom: -24px;
+  color: #ef4444;
+}
