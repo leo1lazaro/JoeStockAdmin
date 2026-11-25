@@ -38,6 +38,15 @@ export function extrairMensagemErro(erro: unknown): string {
   return 'Não foi possível concluir a operação.';
 }
 
+export async function enviarImagemCatalogo(arquivo: File): Promise<string> {
+  const formulario = new FormData();
+  formulario.append('arquivo', arquivo);
+  const resposta = await clienteApi.post<RespostaApi<{ url: string }>>('/admin/imagens', formulario, {
+    headers: { 'Content-Type': undefined },
+  });
+  return resposta.data.data.url;
+}
+
 /**
  * Cria os hooks de listagem, gravação e exclusão de um cadastro administrativo de catálogo.
  */

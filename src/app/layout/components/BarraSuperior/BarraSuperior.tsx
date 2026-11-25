@@ -48,11 +48,11 @@ export const BarraSuperior: React.FC<PropriedadesBarraSuperior> = ({
       <div className="acoes-topo">
         <button
           className="btn-pilula-acao"
-          aria-label="Estoque"
-          onClick={() => navegar('/admin/estoque')}
+          aria-label="Cartas e estoque"
+          onClick={() => navegar('/admin/cartas')}
         >
           <Package size={15} />
-          <span>Estoque</span>
+          <span>Cartas</span>
         </button>
 
         <button

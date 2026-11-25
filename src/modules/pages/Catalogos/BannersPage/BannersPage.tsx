@@ -10,7 +10,7 @@ import '../components/CatalogoPage/CatalogoPage.css';
 import './BannersPage.css';
 
 const TIPO_ACAO_ROTA = 1;
-const TIPO_ACAO_PRODUTOS = 2;
+const TIPO_ACAO_CARTAS = 2;
 
 interface BannerAcao {
   tipoAcao: number;
@@ -60,7 +60,7 @@ const COR_HEX = /^#[0-9a-fA-F]{6}$/;
 
 const rotuloAcao = (acao: Banner['acao']) => {
   if (!acao) return 'Sem ação';
-  return `${acao.tipoAcao === TIPO_ACAO_ROTA ? 'Rota' : 'Produtos'}: ${acao.valorAcao}`;
+  return `${acao.tipoAcao === TIPO_ACAO_ROTA ? 'Rota' : 'Cartas'}: ${acao.valorAcao}`;
 };
 
 export const BannersPage: React.FC = () => {
@@ -374,7 +374,7 @@ export const BannersPage: React.FC = () => {
                 opcoes={[
                   { valor: 0, rotulo: 'Sem ação' },
                   { valor: TIPO_ACAO_ROTA, rotulo: 'Rota do aplicativo' },
-                  { valor: TIPO_ACAO_PRODUTOS, rotulo: 'Produtos' },
+                  { valor: TIPO_ACAO_CARTAS, rotulo: 'Cartas' },
                 ]}
                 aoAlterar={(tipo) =>
                   atualizar('acao', tipo ? { tipoAcao: tipo, valorAcao: valores.acao?.valorAcao ?? '' } : null)
@@ -392,7 +392,7 @@ export const BannersPage: React.FC = () => {
                 onChange={(e) =>
                   valores.acao && atualizar('acao', { ...valores.acao, valorAcao: e.target.value })
                 }
-                placeholder={valores.acao?.tipoAcao === TIPO_ACAO_PRODUTOS ? 'Ex.: 12,15,18' : 'Ex.: /cartas'}
+                placeholder={valores.acao?.tipoAcao === TIPO_ACAO_CARTAS ? 'Ex.: 12,15,18' : 'Ex.: /cartas'}
                 autoComplete="off"
               />
             </label>

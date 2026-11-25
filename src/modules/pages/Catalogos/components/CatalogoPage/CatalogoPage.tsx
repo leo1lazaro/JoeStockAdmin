@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { AlertCircle, ImageUp, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { Botao } from '@/shared/components/Botao/Botao';
 import { Modal } from '@/shared/components/Modal/Modal';
 import { useNotificacaoToast } from '@/shared/hooks/useNotificacaoToast';
-import { criarHooksCatalogo, extrairMensagemErro } from '../../api/catalogosApi';
+import { criarHooksCatalogo, enviarImagemCatalogo, extrairMensagemErro } from '../../api/catalogosApi';
 import './CatalogoPage.css';
 
 export interface CampoCatalogo<TPayload> {
   nome: keyof TPayload & string;
   rotulo: string;
-  tipo: 'texto' | 'caixa';
+  tipo: 'texto' | 'caixa' | 'imagem';
   placeholder?: string;
   maxLength?: number;
   obrigatorio?: boolean;
@@ -64,6 +64,7 @@ export function CatalogoPage<TItem extends { id: number }, TPayload extends obje
   const [valores, setValores] = useState<TPayload>(payloadInicial);
   const [erroFormulario, setErroFormulario] = useState<string | null>(null);
   const [itemParaExcluir, setItemParaExcluir] = useState<TItem | null>(null);
+  const [enviandoImagem, setEnviandoImagem] = useState(false);
 
   const itensFiltrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
@@ -105,6 +106,20 @@ export function CatalogoPage<TItem extends { id: number }, TPayload extends obje
       setFormularioAberto(false);
     } catch (erro) {
       setErroFormulario(extrairMensagemErro(erro));
+    }
+  };
+
+  const selecionarImagem = async (arquivo?: File) => {
+    if (!arquivo) return;
+    setErroFormulario(null);
+    setEnviandoImagem(true);
+    try {
+      const url = await enviarImagemCatalogo(arquivo);
+      setValores((atual) => ({ ...atual, imagemUrl: url }));
+    } catch (erro) {
+      setErroFormulario(extrairMensagemErro(erro));
+    } finally {
+      setEnviandoImagem(false);
     }
   };
 
@@ -227,8 +242,8 @@ export function CatalogoPage<TItem extends { id: number }, TPayload extends obje
             <Botao variante="fantasma" onClick={fecharFormulario} disabled={salvar.isPending}>
               Cancelar
             </Botao>
-            <Botao variante="primario" type="submit" form="formulario-catalogo" disabled={salvar.isPending}>
-              {salvar.isPending ? 'Salvando...' : 'Salvar'}
+            <Botao variante="primario" type="submit" form="formulario-catalogo" disabled={salvar.isPending || enviandoImagem}>
+              {enviandoImagem ? 'Enviando imagem...' : salvar.isPending ? 'Salvando...' : 'Salvar'}
             </Botao>
           </>
         }
@@ -250,6 +265,35 @@ export function CatalogoPage<TItem extends { id: number }, TPayload extends obje
                     {campo.ajuda && <small>{campo.ajuda}</small>}
                   </span>
                 </label>
+              );
+            }
+
+            if (campo.tipo === 'imagem') {
+              return (
+                <div key={campo.nome} className="catalogo-campo catalogo-campo-imagem">
+                  <span>{campo.rotulo}</span>
+                  <input
+                    type="url"
+                    value={typeof valor === 'string' ? valor : ''}
+                    onChange={(e) => alterarCampo(campo, e.target.value)}
+                    placeholder={campo.placeholder ?? 'https://...'}
+                    maxLength={campo.maxLength}
+                    autoComplete="off"
+                    aria-label={`${campo.rotulo} por URL`}
+                  />
+                  <label className="catalogo-upload-imagem">
+                    <ImageUp size={16} />
+                    <span>{enviandoImagem ? 'Enviando para o S3...' : 'Ou importar arquivo'}</span>
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      disabled={enviandoImagem}
+                      onChange={(e) => { void selecionarImagem(e.target.files?.[0]); e.currentTarget.value = ''; }}
+                    />
+                  </label>
+                  {typeof valor === 'string' && valor && <img className="catalogo-preview-imagem" src={valor} alt="Prévia do ícone" />}
+                  {campo.ajuda && <small>{campo.ajuda}</small>}
+                </div>
               );
             }
 

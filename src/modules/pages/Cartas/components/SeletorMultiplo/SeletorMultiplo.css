@@ -30,6 +30,13 @@
   color: #fff;
 }
 
+.seletor-multiplo-icone {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .seletor-multiplo-vazio {
   font-size: 13px;
   color: var(--cor-texto-mutado);

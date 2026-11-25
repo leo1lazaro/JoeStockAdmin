@@ -272,3 +272,7 @@
   line-height: 1.5;
   color: var(--cor-texto-principal);
 }
+
+.catalogo-upload-imagem { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 9px 12px; border: 1px dashed var(--borda-destaque); border-radius: 9px; cursor: pointer; color: var(--cor-texto-secundario); font-size: 13px; }
+.catalogo-upload-imagem input { display: none; }
+.catalogo-preview-imagem { width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: var(--cor-fundo-secundario); }

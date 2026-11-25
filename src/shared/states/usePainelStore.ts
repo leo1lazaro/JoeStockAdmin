@@ -4,6 +4,7 @@ export type PeriodoFiltro = 'este_mes' | 'mes_anterior' | 'ano';
 export type MenuNavegacao =
   | 'overview'
   | 'cards'
+  | 'inventory'
   | 'banners'
   | 'crypt'
   | 'library'

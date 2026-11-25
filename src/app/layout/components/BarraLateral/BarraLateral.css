@@ -82,49 +82,65 @@
 
 /* Grid 2x2 e Botões de Navegação */
 .grid-navegacao-acoes {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .card-nav-acao {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 84px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  color: var(--cor-texto-principal);
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 40px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   transition: all var(--transicao-rapida);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  text-align: center;
-  padding: 8px 6px;
+  text-align: left;
+  padding: 9px 10px;
 }
 
 .card-nav-acao:hover {
-  transform: translateY(-2px);
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--cor-texto-principal);
 }
 
 .card-nav-acao.ativo {
-  background: #18191f;
-  color: #ffffff;
-  border-color: #18191f;
-  box-shadow: 0 6px 18px rgba(24, 25, 31, 0.25);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--cor-texto-principal);
+  font-weight: 600;
 }
 
 .card-nav-icone {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+  color: var(--cor-texto-mutado);
+}
+
+.card-nav-acao:hover .card-nav-icone,
+.card-nav-acao.ativo .card-nav-icone {
+  color: var(--cor-texto-principal);
+}
+
+.cartas-cadastros-seta {
+  margin-left: auto;
+  color: var(--cor-texto-mutado);
+  transition: transform var(--transicao-rapida);
+}
+
+.cartas-cadastros-seta.aberta {
+  transform: rotate(180deg);
 }
 
 /* Lista de Configurações Rápidas */
@@ -178,6 +194,15 @@
 
 .item-config-sidebar.ativo .item-config-icone {
   color: var(--cor-texto-principal);
+}
+
+.cartas-cadastros-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 2px 0 8px 10px;
+  padding: 4px 0 4px 10px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1024px) {

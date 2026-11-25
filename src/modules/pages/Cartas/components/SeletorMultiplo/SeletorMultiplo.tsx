@@ -5,6 +5,7 @@ import './SeletorMultiplo.css';
 interface OpcaoMultipla {
   id: number;
   nome: string;
+  imagemUrl?: string | null;
 }
 
 interface PropriedadesSeletorMultiplo {
@@ -39,6 +40,7 @@ export const SeletorMultiplo: React.FC<PropriedadesSeletorMultiplo> = ({
             onClick={() => alternar(opcao.id)}
           >
             {ativo && <Check size={13} />}
+            {opcao.imagemUrl && <img className="seletor-multiplo-icone" src={opcao.imagemUrl} alt="" loading="lazy" />}
             {opcao.nome}
           </button>
         );

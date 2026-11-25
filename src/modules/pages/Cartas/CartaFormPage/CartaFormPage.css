@@ -168,6 +168,41 @@
   color: var(--cor-texto-principal);
 }
 
+.carta-form-grupo-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.carta-form-cadastro-rapido {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1px dashed var(--borda-destaque);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cor-texto-secundario);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+}
+
+.carta-form-cadastro-rapido:hover {
+  border-color: var(--cor-superficie-escura);
+  color: var(--cor-texto-principal);
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.carta-form-modal-rapido {
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
 .carta-form-rodape {
   position: sticky;
   bottom: 0;

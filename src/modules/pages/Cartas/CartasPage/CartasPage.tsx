@@ -8,6 +8,7 @@ import {
   FILTROS_CARTAS_INICIAIS,
   FiltroOpcao,
   FiltrosCartas,
+  useListarFiltrosCartas,
   useListarCartas,
 } from '../api/cartasApi';
 import '@/modules/pages/Catalogos/components/CatalogoPage/CatalogoPage.css';
@@ -26,6 +27,7 @@ export const CartasPage: React.FC = () => {
   const [filtros, setFiltros] = useState<FiltrosCartas>(FILTROS_CARTAS_INICIAIS);
   const [busca, setBusca] = useState('');
   const { data, isLoading, isError, error, isFetching, refetch } = useListarCartas(filtros);
+  const consultaFiltros = useListarFiltrosCartas();
 
   useEffect(() => {
     const espera = setTimeout(() => {
@@ -51,7 +53,7 @@ export const CartasPage: React.FC = () => {
       Boolean,
     );
 
-  const opcoes = data?.filtros;
+  const opcoes = consultaFiltros.data;
   const totalPaginas = data ? Math.max(1, Math.ceil(data.total / data.tamanhoPagina)) : 1;
   const cartas = data?.cartas ?? [];
 
@@ -69,7 +71,7 @@ export const CartasPage: React.FC = () => {
           </div>
           <div>
             <h2 className="pagina-catalogo-titulo">Cartas</h2>
-            <p className="pagina-catalogo-descricao">Consulte as cartas de Library e Cripta com filtros.</p>
+            <p className="pagina-catalogo-descricao">Gerencie cartas do jogo, cartas comerciais, preços e estoque.</p>
           </div>
         </div>
         <Botao variante="primario" icone={<Plus size={16} />} onClick={() => navegar('/admin/cartas/nova')}>
@@ -95,6 +97,7 @@ export const CartasPage: React.FC = () => {
             opcoes={opcoesDe(opcoes?.tipos, 'Library e Cripta')}
             aoAlterar={alterarTipo}
           />
+          {filtros.tipo !== 3 && <>
           <Select
             rotuloAcessivel="Tipo de carta"
             valor={filtros.tipoCartaId}
@@ -135,6 +138,7 @@ export const CartasPage: React.FC = () => {
               aoAlterar={(v) => alterar('grupo', v)}
             />
           )}
+          </>}
 
           <Botao variante="fantasma" onClick={limpar} disabled={!filtrosAtivos}>
             <FilterX size={15} /> Limpar filtros
@@ -167,7 +171,9 @@ export const CartasPage: React.FC = () => {
                 <tr>
                   <th>Carta</th>
                   <th>Tipo</th>
-                  <th>Texto</th>
+                  <th>Texto / descrição</th>
+                  <th>Preço</th>
+                  <th>Estoque</th>
                   <th className="catalogo-coluna-acoes">Ações</th>
                 </tr>
               </thead>
@@ -193,10 +199,12 @@ export const CartasPage: React.FC = () => {
                     </td>
                     <td>
                       <span className={`catalogo-selo ${ehCripta(carta.tipo) ? '' : 'catalogo-selo-sucesso'}`}>
-                        {ehCripta(carta.tipo) ? 'Cripta' : 'Library'}
+                        {Number(carta.tipo) === 3 ? carta.categoria : ehCripta(carta.tipo) ? 'Cripta' : 'Library'}
                       </span>
                     </td>
                     <td className="carta-texto">{carta.textoCarta}</td>
+                    <td>{carta.preco == null ? '—' : `R$ ${carta.preco.toFixed(2)}`}</td>
+                    <td>{carta.estoque}</td>
                     <td className="catalogo-coluna-acoes">
                       <button
                         className="catalogo-btn-acao"

@@ -41,11 +41,11 @@ export const DisciplinasPage: React.FC = () => (
       { nome: 'nome', rotulo: 'Nome', tipo: 'texto', obrigatorio: true, maxLength: 100, placeholder: 'Ex.: Dominate' },
       {
         nome: 'imagemUrl',
-        rotulo: 'URL da imagem',
-        tipo: 'texto',
+        rotulo: 'Ícone',
+        tipo: 'imagem',
         maxLength: 500,
-        placeholder: 'https://...',
-        ajuda: 'Opcional.',
+        placeholder: 'https://... (opcional)',
+        ajuda: 'Informe uma URL pública ou importe PNG, JPEG ou WebP (até 5 MB).',
       },
     ]}
   />

@@ -8,6 +8,7 @@ interface TipoCarta {
   nome: string;
   somenteCripta: boolean;
   somenteLibrary: boolean;
+  imagemUrl: string | null;
 }
 
 type TipoCartaPayload = Omit<TipoCarta, 'id'>;
@@ -28,16 +29,18 @@ export const TiposCartaPage: React.FC = () => (
     artigo="o"
     icone={<Tags size={20} />}
     hooks={hooks}
-    payloadInicial={{ nome: '', somenteCripta: false, somenteLibrary: false }}
-    paraPayload={({ nome, somenteCripta, somenteLibrary }) => ({ nome, somenteCripta, somenteLibrary })}
+    payloadInicial={{ nome: '', somenteCripta: false, somenteLibrary: false, imagemUrl: '' }}
+    paraPayload={({ nome, somenteCripta, somenteLibrary, imagemUrl }) => ({ nome, somenteCripta, somenteLibrary, imagemUrl: imagemUrl ?? '' })}
     textoBusca={(item) => item.nome}
     rotuloItem={(item) => item.nome}
     colunas={[
+      { titulo: 'Ícone', renderizar: (item) => item.imagemUrl ? <img className="catalogo-miniatura" src={item.imagemUrl} alt={item.nome} /> : <span className="catalogo-selo">Sem imagem</span> },
       { titulo: 'Nome', renderizar: (item) => item.nome },
       { titulo: 'Utilização', renderizar: (item) => <span className="catalogo-selo">{escopo(item)}</span> },
     ]}
     campos={[
       { nome: 'nome', rotulo: 'Nome', tipo: 'texto', obrigatorio: true, maxLength: 100, placeholder: 'Ex.: Master' },
+      { nome: 'imagemUrl', rotulo: 'Ícone', tipo: 'imagem', maxLength: 500, ajuda: 'Informe uma URL pública ou importe PNG, JPEG ou WebP (até 5 MB).' },
       {
         nome: 'somenteCripta',
         rotulo: 'Somente cripta',

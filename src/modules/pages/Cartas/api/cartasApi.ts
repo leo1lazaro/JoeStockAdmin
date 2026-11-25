@@ -21,6 +21,29 @@ export interface CartaItem {
   nomeImpresso: string;
   textoCarta: string;
   imagemUrl?: string | null;
+  preco: number | null;
+  estoque: number;
+  ativo: boolean;
+  categoria: string;
+  origem: string;
+  subcategoria: string;
+}
+
+export interface CartasFiltros {
+  tipos: FiltroOpcao[];
+  tiposCarta: FiltroOpcao[];
+  clas: FiltroOpcao[];
+  disciplinas: FiltroOpcao[];
+  idiomas: FiltroOpcao[];
+  estados: FiltroOpcao[];
+  grupos: number[];
+  edicoes: string[];
+  sects: string[];
+  artistas: string[];
+  precons: FiltroOpcao[];
+  titulos: string[];
+  traits: string[];
+  votos: number[];
 }
 
 export interface CartasListagem {
@@ -28,15 +51,7 @@ export interface CartasListagem {
   total: number;
   pagina: number;
   tamanhoPagina: number;
-  filtros: {
-    tipos: FiltroOpcao[];
-    tiposCarta: FiltroOpcao[];
-    clas: FiltroOpcao[];
-    disciplinas: FiltroOpcao[];
-    idiomas: FiltroOpcao[];
-    estados: FiltroOpcao[];
-    grupos: number[];
-  };
+  filtros: CartasFiltros;
 }
 
 export interface FiltrosCartas {
@@ -86,14 +101,29 @@ export interface CartaPayload {
   nomeImpresso?: string | null;
   textoCarta: string;
   imagemUrl?: string | null;
+  versao?: string | null;
+  categoria: string;
+  origem: string;
+  subcategoria: string;
+  preco: number | null;
+  ativo: boolean;
+  sect?: string | null;
+  edicao?: string | null;
+  edicaoOrdem?: number | null;
+  artista?: string | null;
+  preconsIds: number[];
+  primeiraImpressao: boolean;
+  reimpressao: boolean;
+  titulos: string[];
+  traits: string[];
   tiposCartaIds: number[];
   clasIds: number[];
   disciplinasIds: number[];
   idiomasIds: number[];
   estadosIds: number[];
   capacidade?: number | null;
-  edicao?: string | null;
   grupo?: number | null;
+  votos?: number | null;
   custoSangue?: number | null;
   custoPool?: number | null;
   acaoDirecionada: boolean;
@@ -115,6 +145,32 @@ export function useCriarCarta() {
 export interface CartaDetalhe extends Omit<CartaPayload, 'tipo'> {
   id: number;
   tipo: number;
+  estoque: number;
+  versao: string;
+  tiposCartaIds: number[];
+  clasIds: number[];
+  disciplinasIds: number[];
+  idiomasIds: number[];
+  estadosIds: number[];
+  capacidade?: number | null;
+  edicao?: string | null;
+  grupo?: number | null;
+  custoSangue?: number | null;
+  custoPool?: number | null;
+  acaoDirecionada: boolean;
+  textoRequisito?: string | null;
+}
+
+export function useListarFiltrosCartas() {
+  return useQuery<CartasFiltros>({
+    queryKey: ['cartas', 'filtros'],
+    queryFn: async () => {
+      const resposta = await clienteApi.get<RespostaApi<CartasFiltros>>('/cartas/filtros');
+      return resposta.data.data;
+    },
+    staleTime: 5 * 60 * 1000,
+    meta: { desativarNotificacao: true },
+  });
 }
 
 export function useObterCarta(id?: number) {
