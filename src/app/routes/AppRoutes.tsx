@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route, RouterProvider } from 'react-router-dom';
 import { AdminLoginPage } from '@/modules/pages/AdminLogin/AdminLoginPage';
 import { VisaoGeralPage } from '@/modules/pages/Comercio/VisaoGeralPage';
 import { PedidosPage } from '@/modules/pages/Comercio/PedidosPage';
@@ -26,10 +26,8 @@ const LayoutAdmin: React.FC = () => (
 /**
  * Mapeador de rotas e páginas da aplicação
  */
-export const AppRoutes: React.FC = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
+const router = createBrowserRouter(createRoutesFromElements(
+      <>
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route element={<RotaAdminProtegida />}>
@@ -52,7 +50,7 @@ export const AppRoutes: React.FC = () => {
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/admin" replace />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
+      </>
+));
+
+export const AppRoutes: React.FC = () => <RouterProvider router={router} />;

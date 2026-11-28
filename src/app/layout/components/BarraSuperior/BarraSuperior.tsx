@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@/shared/components/Avatar/Avatar';
 import { useNotificacaoToast } from '@/shared/hooks/useNotificacaoToast';
 import { useLogoutAdmin } from '@/app/auth/adminAuthApi';
+import { solicitarSaida } from '@/shared/hooks/useAlteracoesPendentes';
 import './BarraSuperior.css';
 
 interface PropriedadesBarraSuperior {
@@ -31,12 +32,16 @@ export const BarraSuperior: React.FC<PropriedadesBarraSuperior> = ({
   const logout = useLogoutAdmin();
   const navegar = useNavigate();
 
-  const aoSair = () => {
-    logout.mutate(undefined, {
-      onSuccess: () => navegar('/admin/login', { replace: true }),
-      onError: () => toast.erro('Não foi possível encerrar a sessão. Tente novamente.'),
-    });
-  };
+  const aoSair = () => solicitarSaida(async () => {
+    try {
+      await logout.mutateAsync();
+      navegar('/admin/login', { replace: true });
+      return true;
+    } catch {
+      toast.erro('Não foi possível encerrar a sessão. Tente novamente.');
+      return false;
+    }
+  });
 
   return (
     <header className="barra-superior">

@@ -1,0 +1,136 @@
+.impressoes-carta {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.impressoes-carta-introducao {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.impressoes-carta-lista { display: grid; gap: 16px; }
+
+.impressao-carta {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--borda-suave);
+  border-radius: 16px;
+  background: var(--cor-superficie-branca);
+}
+
+.impressao-carta-legenda {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.impressao-carta-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--borda-suave);
+}
+
+.impressao-carta-numero {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--cor-fundo-secundario);
+  color: var(--cor-texto-secundario);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.impressao-carta-identidade { flex: 1; min-width: 0; }
+.impressao-carta-identidade h5 { margin: 0; font-size: 13.5px; font-weight: 600; overflow-wrap: anywhere; }
+.impressao-carta-identidade > span { display: flex; align-items: center; gap: 5px; margin-top: 4px; color: var(--cor-texto-mutado); font-size: 12px; }
+.impressao-carta-status { padding: 5px 9px; border-radius: 6px; color: #396649; background: #edf5ef; font-size: 11px; font-weight: 500; }
+.impressao-carta-remover { padding: 8px 10px; font-size: 12px; }
+.impressao-carta-remover:hover:not(:disabled) { background: #fff0f0; color: var(--cor-perigo, #b42318); }
+
+.impressao-carta-corpo {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  padding: 20px;
+}
+
+.impressao-carta-imagem { display: grid; gap: 8px; }
+.impressao-carta-previa {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 7;
+  background: var(--cor-fundo-secundario);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.impressao-carta-previa img { width: 100%; height: 100%; object-fit: contain; }
+.impressao-carta-previa > span { display: grid; justify-items: center; gap: 8px; padding: 10px; color: var(--cor-texto-mutado); text-align: center; font-size: 11px; line-height: 1.4; }
+.impressao-carta-previa-legenda { color: var(--cor-texto-mutado); font-size: 10.5px; text-align: center; }
+.impressao-carta-conteudo { display: grid; gap: 16px; min-width: 0; }
+.impressao-carta-campos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.impressao-carta .catalogo-campo { min-width: 0; gap: 7px; }
+.impressao-carta .catalogo-campo > span { font-size: 12px; font-weight: 500; }
+.impressao-carta .catalogo-campo input { min-width: 0; padding: 10px 12px; font-size: 13px; border-radius: 10px; }
+.impressao-carta .catalogo-campo input:disabled { background: var(--cor-fundo-secundario); color: var(--cor-texto-secundario); cursor: not-allowed; }
+.impressao-carta-obrigatorio { color: var(--cor-texto-mutado); }
+
+.impressao-carta-upload {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 16px;
+  padding: 14px;
+  border: 1px dashed var(--borda-destaque);
+  border-radius: 12px;
+}
+.impressao-carta-upload strong { font-size: 12px; font-weight: 600; }
+.impressao-carta-upload p { margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: var(--cor-texto-secundario); }
+.impressao-carta-upload small { grid-column: 1 / -1; color: var(--cor-texto-mutado); font-size: 11px; }
+.impressao-carta-arquivo { display: none; }
+.impressao-carta-link summary { display: flex; align-items: center; gap: 6px; width: fit-content; padding: 3px 0; color: var(--cor-texto-secundario); cursor: pointer; font-size: 12px; list-style: none; }
+.impressao-carta-link summary::-webkit-details-marker { display: none; }
+.impressao-carta-link summary:hover { color: var(--cor-texto-principal); }
+.impressao-carta-link[open] summary { margin-bottom: 10px; }
+.impressao-carta-link summary:focus-visible { outline: 2px solid var(--cor-texto-secundario); outline-offset: 4px; border-radius: 3px; }
+.impressao-carta-nota { margin: 0; color: var(--cor-texto-mutado); font-size: 11.5px; line-height: 1.5; }
+.impressao-carta-erro { margin: 0; font-size: 12px; line-height: 1.5; color: var(--cor-perigo, #b42318); }
+
+.impressoes-carta-vazio { display: grid; justify-items: center; gap: 10px; padding: 28px 18px; border: 1px dashed var(--borda-destaque); border-radius: 16px; text-align: center; background: var(--cor-fundo-secundario); }
+.impressoes-carta-vazio-icone { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px; background: var(--cor-superficie-branca); color: var(--cor-texto-secundario); }
+.impressoes-carta-vazio strong { font-size: 13px; font-weight: 600; }
+.impressoes-carta-vazio p { margin: 0; font-size: 12px; line-height: 1.6; color: var(--cor-texto-secundario); }
+.impressoes-carta-rodape { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.impressoes-carta-rodape > span { color: var(--cor-texto-mutado); font-size: 12px; }
+.impressao-carta-carregando { animation: impressao-carta-girar 1s linear infinite; }
+@keyframes impressao-carta-girar { to { transform: rotate(360deg); } }
+
+@media (max-width: 700px) {
+  .impressao-carta-corpo { grid-template-columns: 80px minmax(0, 1fr); gap: 16px; padding: 16px; }
+  .impressao-carta-campos { grid-template-columns: minmax(0, 1fr); }
+  .impressao-carta-upload { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .impressao-carta-upload .btn-padrao { justify-self: start; }
+}
+
+@media (max-width: 440px) {
+  .impressao-carta-corpo { grid-template-columns: minmax(0, 1fr); }
+  .impressao-carta-imagem { width: 86px; justify-self: center; }
+  .impressao-carta-cabecalho { gap: 8px; padding: 12px; }
+  .impressao-carta-remover { font-size: 11px; padding: 8px 5px; }
+  .impressoes-carta-rodape { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) { .impressao-carta-carregando { animation: none; } }

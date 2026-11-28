@@ -139,23 +139,6 @@
   color: var(--cor-texto-mutado);
 }
 
-.carta-form-custo {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.carta-form-custo-valor {
-  width: 110px;
-  min-height: 36px;
-  padding: 6px 12px;
-  border: 1px solid var(--borda-destaque);
-  border-radius: 10px;
-  background: #fff;
-  outline: none;
-}
-
 .carta-form-grupo {
   display: flex;
   flex-direction: column;

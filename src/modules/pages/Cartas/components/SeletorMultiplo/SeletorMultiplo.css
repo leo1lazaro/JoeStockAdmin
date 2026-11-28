@@ -1,3 +1,9 @@
+.seletor-multiplo-campo {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
 .seletor-multiplo {
   display: flex;
   flex-wrap: wrap;
@@ -24,20 +30,9 @@
   color: var(--cor-texto-principal);
 }
 
-.seletor-multiplo-chip.ativo {
-  background: var(--cor-superficie-escura);
-  border-color: var(--cor-superficie-escura);
-  color: #fff;
-}
-
 .seletor-multiplo-icone {
   width: 20px;
   height: 20px;
   object-fit: contain;
   flex-shrink: 0;
-}
-
-.seletor-multiplo-vazio {
-  font-size: 13px;
-  color: var(--cor-texto-mutado);
 }

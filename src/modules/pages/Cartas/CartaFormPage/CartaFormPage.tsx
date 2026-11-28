@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Check, Image as IconeImagem, ImageUp, Plus, Skull, BookOpen, Package } from 'lucide-react';
+import { ImpressoesCarta } from '../components/ImpressoesCarta';
+import type { ImpressaoCarta } from '../api/cartasApi';
+import React, { useEffect, useState } from 'react';
+import { ArrowLeft, Image as IconeImagem, ImageUp, Plus, Skull, BookOpen, Package } from 'lucide-react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Botao } from '@/shared/components/Botao/Botao';
-import { InputNumero } from '@/shared/components/InputNumero/InputNumero';
 import { useNotificacaoToast } from '@/shared/hooks/useNotificacaoToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { clienteApi } from '@/app/config/apiConfig';
@@ -19,6 +20,10 @@ import {
   useObterCarta,
 } from '../api/cartasApi';
 import { SeletorMultiplo } from '../components/SeletorMultiplo/SeletorMultiplo';
+import { CampoSelecaoCarta } from '../components/CampoSelecaoCarta/CampoSelecaoCarta';
+import {
+  CAPACIDADES, CUSTOS, EDICOES, GRUPOS, SEITAS, TITULOS, TRAITS_CRIPTA, TRAITS_LIBRARY, VOTOS, combinarOpcoes,
+} from './opcoesCadastroCarta';
 import '@/modules/pages/Catalogos/components/CatalogoPage/CatalogoPage.css';
 import './CartaFormPage.css';
 
@@ -56,12 +61,14 @@ interface ValoresCarta {
   preconsIds: number[];
   primeiraImpressao: boolean;
   reimpressao: boolean;
-  titulos: string;
-  traits: string;
+  titulos: string[];
+  traits: string[];
   tiposCartaIds: number[];
   clasIds: number[];
   disciplinasIds: number[];
   idiomasIds: number[];
+  impressoes: ImpressaoCarta[];
+  imagensIdiomas: Record<number, string>;
   estadosIds: number[];
   capacidade: string;
   edicao: string;
@@ -91,12 +98,14 @@ const VALORES_INICIAIS: ValoresCarta = {
   preconsIds: [],
   primeiraImpressao: false,
   reimpressao: false,
-  titulos: '',
-  traits: '',
+  titulos: [],
+  traits: [],
   tiposCartaIds: [],
   clasIds: [],
   disciplinasIds: [],
   idiomasIds: [],
+  impressoes: [],
+  imagensIdiomas: {},
   estadosIds: [],
   capacidade: '',
   edicao: '',
@@ -123,6 +132,7 @@ export const CartaFormPage: React.FC = () => {
   const { data: cartaExistente, isLoading: carregandoCarta, isError: erroCarta } = useObterCarta(idCarta);
   const [valores, setValores] = useState<ValoresCarta>(VALORES_INICIAIS);
   const [erros, setErros] = useState<Record<string, string>>({});
+  const [enviandoImpressao, setEnviandoImpressao] = useState(false);
   const [imagemQuebrada, setImagemQuebrada] = useState(false);
   const [cadastroRapido, setCadastroRapido] = useState<CampoCadastroRapido | null>(null);
   const [nomeRapido, setNomeRapido] = useState('');
@@ -171,20 +181,22 @@ export const CartaFormPage: React.FC = () => {
       preconsIds: c.preconsIds ?? [],
       primeiraImpressao: c.primeiraImpressao,
       reimpressao: c.reimpressao,
-      titulos: c.titulos.join(', '),
-      traits: c.traits.join(', '),
+      titulos: c.titulos,
+      traits: c.traits,
       tiposCartaIds: c.tiposCartaIds,
       clasIds: c.clasIds,
       disciplinasIds: c.disciplinasIds,
       idiomasIds: c.idiomasIds,
+      impressoes: c.impressoes ?? [],
+      imagensIdiomas: c.imagensIdiomas ?? {},
       estadosIds: c.estadosIds,
       capacidade: c.capacidade != null ? String(c.capacidade) : '',
       edicao: c.edicao ?? '',
       edicaoOrdem: c.edicaoOrdem != null ? String(c.edicaoOrdem) : '',
       grupo: c.grupo != null ? String(c.grupo) : '',
       votos: c.votos != null ? String(c.votos) : '',
-      custoTipo: c.custoSangue ? 'sangue' : c.custoPool ? 'pool' : 'nenhum',
-      custo: String(c.custoSangue || c.custoPool || ''),
+      custoTipo: c.custoSangue != null ? 'sangue' : c.custoPool != null ? 'pool' : 'nenhum',
+      custo: String(c.custoSangue ?? c.custoPool ?? ''),
       acaoDirecionada: c.acaoDirecionada,
       textoRequisito: c.textoRequisito ?? '',
     });
@@ -269,12 +281,9 @@ export const CartaFormPage: React.FC = () => {
     }
   };
 
-  const idsOpcoes = useMemo(() => new Set((opcoes?.tiposCarta ?? []).map((t) => t.id)), [opcoes?.tiposCarta]);
-
   const validar = () => {
     const novos: Record<string, string> = {};
     if (!valores.nome.trim()) novos.nome = 'Informe o nome da carta.';
-    if (!valores.textoCarta.trim()) novos.textoCarta = 'Informe o texto da carta.';
     if (ehComercial) {
       if (!Number.isFinite(Number(valores.preco)) || Number(valores.preco) <= 0)
         novos.preco = 'Informe um preço maior que zero.';
@@ -282,8 +291,13 @@ export const CartaFormPage: React.FC = () => {
       const capacidade = Number(valores.capacidade);
       if (!valores.capacidade || !Number.isInteger(capacidade) || capacidade < 1 || capacidade > 11)
         novos.capacidade = 'Informe a capacidade (de 1 a 11).';
-    } else if (valores.custoTipo !== 'nenhum' && !(Number(valores.custo) > 0)) {
-      novos.custo = 'Informe um custo maior que zero.';
+      const grupo = inteiroOuNulo(valores.grupo);
+      if (grupo !== null && (!Number.isInteger(grupo) || grupo < 1))
+        novos.grupo = 'Informe um grupo inteiro a partir de 1.';
+    } else if (valores.custoTipo !== 'nenhum') {
+      const custo = inteiroOuNulo(valores.custo);
+      if (custo === null || !Number.isInteger(custo) || custo < 0)
+        novos.custo = 'Informe um custo inteiro a partir de 0.';
     }
     setErros(novos);
     return Object.keys(novos).length === 0;
@@ -309,10 +323,12 @@ export const CartaFormPage: React.FC = () => {
       subcategoria: valores.subcategoria,
       preco: valores.preco ? Number(valores.preco) : null,
       ativo: valores.ativo,
-      tiposCartaIds: valores.tiposCartaIds.filter((id) => idsOpcoes.has(id)),
+      tiposCartaIds: valores.tiposCartaIds,
       clasIds: valores.clasIds,
       disciplinasIds: valores.disciplinasIds,
       idiomasIds: valores.idiomasIds,
+      impressoes: valores.impressoes,
+      imagensIdiomas: Object.fromEntries(Object.entries(valores.imagensIdiomas).filter(([, url]) => url.trim())),
       estadosIds: valores.estadosIds,
       sect: valores.sect || null,
       edicao: valores.edicao || null,
@@ -321,8 +337,8 @@ export const CartaFormPage: React.FC = () => {
       preconsIds: valores.preconsIds,
       primeiraImpressao: valores.primeiraImpressao,
       reimpressao: valores.reimpressao,
-      titulos: valores.titulos.split(',').map((valor) => valor.trim()).filter(Boolean),
-      traits: valores.traits.split(',').map((valor) => valor.trim()).filter(Boolean),
+      titulos: valores.titulos,
+      traits: valores.traits,
       acaoDirecionada: !ehCripta && !ehComercial && valores.acaoDirecionada,
       capacidade: ehCripta ? Number(valores.capacidade) : null,
       grupo: ehCripta ? inteiroOuNulo(valores.grupo) : null,
@@ -365,6 +381,24 @@ export const CartaFormPage: React.FC = () => {
   const salvando = criar.isPending || atualizarCarta.isPending;
 
   const campoErro = (nome: string) => (erros[nome] ? <small className="carta-form-erro">{erros[nome]}</small> : null);
+  const seletorMetadado = (campo: 'titulos' | 'traits', rotulo: string, base: string[], catalogo: string[] = []) => (
+    <div className="catalogo-campo">
+      <span>{rotulo}</span>
+      <SeletorMultiplo<string>
+        rotulo={rotulo}
+        opcoes={combinarOpcoes(base, catalogo, valores[campo]).map((nome) => ({ id: nome, nome }))}
+        selecionados={valores[campo]}
+        aoAlterar={(itens) => atualizar(campo, itens)}
+        adicionarOpcao={(item) => {
+          const existente = combinarOpcoes(base, catalogo, valores[campo]).find(
+            (opcao) => opcao.toLocaleLowerCase('pt-BR') === item.toLocaleLowerCase('pt-BR'),
+          );
+          const valor = existente ?? item;
+          if (!valores[campo].includes(valor)) atualizar(campo, [...valores[campo], valor]);
+        }}
+      />
+    </div>
+  );
   const botaoCadastroRapido = (campo: CampoCadastroRapido) => (
     <button type="button" className="carta-form-cadastro-rapido" onClick={() => abrirCadastroRapido(campo)}>
       <Plus size={14} /> Cadastro rápido
@@ -435,11 +469,11 @@ export const CartaFormPage: React.FC = () => {
               <span className="carta-form-passo">2</span>
               <div>
                 <h3>Informações da carta</h3>
-                <p>Nome, texto e imagem exibidos no catálogo.</p>
+                <p>Nome e descrição exibidos no catálogo.</p>
               </div>
             </header>
 
-            <div className="carta-form-grade">
+            <div className={ehComercial ? 'carta-form-grade' : 'carta-form-coluna'}>
               <div className="carta-form-coluna">
                 <label className="catalogo-campo">
                   <span>Nome *</span>
@@ -453,28 +487,18 @@ export const CartaFormPage: React.FC = () => {
                 </label>
 
                 <label className="catalogo-campo">
-                  <span>Nome impresso</span>
-                  <input
-                    value={valores.nomeImpresso}
-                    maxLength={200}
-                    placeholder="Deixe em branco para usar o mesmo nome"
-                    onChange={(e) => atualizar('nomeImpresso', e.target.value)}
-                  />
-                </label>
-
-                <label className="catalogo-campo">
-                  <span>{ehComercial ? 'Descrição *' : 'Texto da carta *'}</span>
+                  <span>Descrição <small>(opcional)</small></span>
                   <textarea
                     className="carta-form-texto"
                     rows={6}
                     value={valores.textoCarta}
-                    placeholder={ehComercial ? 'Descrição da carta comercial' : 'Texto de regras exatamente como na carta'}
+                    placeholder="Adicione uma descrição ou informações sobre a carta"
                     onChange={(e) => atualizar('textoCarta', e.target.value)}
                   />
-                  {campoErro('textoCarta')}
                 </label>
               </div>
 
+              {ehComercial && <>
               <div className="carta-form-coluna">
                 <label className="catalogo-campo">
                   <span>URL da imagem</span>
@@ -496,6 +520,7 @@ export const CartaFormPage: React.FC = () => {
                   )}
                 </div>
               </div>
+              </>}
             </div>
           </section>
 
@@ -539,59 +564,54 @@ export const CartaFormPage: React.FC = () => {
               </div>
             ) : ehCripta ? (
               <div className="carta-form-linha">
-                <label className="catalogo-campo">
-                  <span>Capacidade *</span>
-                  <InputNumero
-                    min={1}
-                    max={11}
-                    valor={valores.capacidade}
-                    placeholder="1 a 11"
-                    aoAlterar={(v) => atualizar('capacidade', v)}
-                  />
+                <CampoSelecaoCarta
+                  rotulo="Capacidade"
+                  obrigatorio
+                  valor={valores.capacidade}
+                  opcoes={CAPACIDADES}
+                  aoAlterar={(v) => atualizar('capacidade', v)}
+                >
                   {campoErro('capacidade')}
-                </label>
-                <label className="catalogo-campo">
-                  <span>Grupo</span>
-                  <InputNumero
-                    min={1}
-                    valor={valores.grupo}
-                    placeholder="Ex.: 2"
-                    aoAlterar={(v) => atualizar('grupo', v)}
-                  />
-                </label>
-                <label className="catalogo-campo">
-                  <span>Votos</span>
-                  <InputNumero min={0} max={4} valor={valores.votos} placeholder="0 a 4" aoAlterar={(v) => atualizar('votos', v)} />
-                </label>
+                </CampoSelecaoCarta>
+                <CampoSelecaoCarta
+                  rotulo="Grupo"
+                  valor={valores.grupo}
+                  opcoes={combinarOpcoes(GRUPOS, (opcoes?.grupos ?? []).map(String))}
+                  novoValor={{ min: 1 }}
+                  aoAlterar={(v) => atualizar('grupo', v)}
+                >
+                  {campoErro('grupo')}
+                </CampoSelecaoCarta>
+                <CampoSelecaoCarta rotulo="Votos" valor={valores.votos} opcoes={VOTOS} aoAlterar={(v) => atualizar('votos', v)} />
               </div>
             ) : (
               <div className="carta-form-coluna">
-                <div className="catalogo-campo">
-                  <span>Custo</span>
-                  <div className="carta-form-custo">
-                    {(['nenhum', 'sangue', 'pool'] as const).map((opcao) => (
-                      <button
-                        key={opcao}
-                        type="button"
-                        className={`seletor-multiplo-chip ${valores.custoTipo === opcao ? 'ativo' : ''}`}
-                        aria-pressed={valores.custoTipo === opcao}
-                        onClick={() => atualizar('custoTipo', opcao)}
-                      >
-                        {valores.custoTipo === opcao && <Check size={13} />}
-                        {opcao === 'nenhum' ? 'Sem custo' : opcao === 'sangue' ? 'Sangue' : 'Pool'}
-                      </button>
-                    ))}
-                    {valores.custoTipo !== 'nenhum' && (
-                      <InputNumero
-                        className="carta-form-custo-valor"
-                        min={1}
-                        valor={valores.custo}
-                        placeholder="Valor"
-                        aoAlterar={(v) => atualizar('custo', v)}
-                      />
-                    )}
+                <div className="carta-form-linha">
+                  <div className="catalogo-campo">
+                    <span>Tipo de custo</span>
+                    <Select<ValoresCarta['custoTipo']>
+                      valor={valores.custoTipo}
+                      opcoes={[
+                        { valor: 'nenhum', rotulo: 'Sem custo' },
+                        { valor: 'sangue', rotulo: 'Sangue' },
+                        { valor: 'pool', rotulo: 'Pool' },
+                      ]}
+                      rotuloAcessivel="Tipo de custo"
+                      aoAlterar={(v) => atualizar('custoTipo', v)}
+                    />
                   </div>
-                  {campoErro('custo')}
+                  {valores.custoTipo !== 'nenhum' && (
+                    <CampoSelecaoCarta
+                      rotulo="Valor do custo"
+                      obrigatorio
+                      valor={valores.custo}
+                      opcoes={CUSTOS}
+                      novoValor={{ min: 0 }}
+                      aoAlterar={(v) => atualizar('custo', v)}
+                    >
+                      {campoErro('custo')}
+                    </CampoSelecaoCarta>
+                  )}
                 </div>
 
                 <label className="catalogo-campo">
@@ -622,13 +642,25 @@ export const CartaFormPage: React.FC = () => {
           {!ehComercial && <section className="card-catalogo carta-form-secao">
             <header><span className="carta-form-passo">4</span><div><h3>Metadados da carta</h3><p>Informações compartilhadas por Cripta e Library, usadas nos filtros do catálogo.</p></div></header>
             <div className="carta-form-linha">
-              <label className="catalogo-campo"><span>Sect</span><input value={valores.sect} maxLength={100} onChange={(e) => atualizar('sect', e.target.value)} placeholder="Ex.: Camarilla" /></label>
-              <label className="catalogo-campo"><span>Set / edição</span><input value={valores.edicao} maxLength={100} onChange={(e) => atualizar('edicao', e.target.value)} placeholder="Ex.: Third Edition" /></label>
-              <label className="catalogo-campo"><span>Artista</span><input value={valores.artista} maxLength={200} onChange={(e) => atualizar('artista', e.target.value)} /></label>
+              <CampoSelecaoCarta
+                rotulo="Seita"
+                valor={valores.sect}
+                opcoes={combinarOpcoes(SEITAS, opcoes?.sects ?? [])}
+                novoValor={{ maxLength: 100 }}
+                aoAlterar={(v) => atualizar('sect', v)}
+              />
+              <CampoSelecaoCarta
+                rotulo="Artista"
+                valor={valores.artista}
+                opcoes={combinarOpcoes(opcoes?.artistas ?? [])}
+                novoValor={{ maxLength: 200 }}
+                aoAlterar={(v) => atualizar('artista', v)}
+              />
             </div>
             <div className="carta-form-grupo carta-form-precons">
               <div className="carta-form-grupo-cabecalho"><h4>Precons</h4>{botaoCadastroRapido('preconsIds')}</div>
               <SeletorMultiplo
+                rotulo="Precons"
                 opcoes={opcoes?.precons ?? []}
                 selecionados={valores.preconsIds}
                 aoAlterar={(ids) => atualizar('preconsIds', ids)}
@@ -636,8 +668,8 @@ export const CartaFormPage: React.FC = () => {
               />
             </div>
             <div className="carta-form-linha">
-              <label className="catalogo-campo"><span>Títulos (separe por vírgula)</span><input value={valores.titulos} onChange={(e) => atualizar('titulos', e.target.value)} placeholder="Ex.: Prince, Primogen" /></label>
-              <label className="catalogo-campo"><span>Traits (separe por vírgula)</span><input value={valores.traits} onChange={(e) => atualizar('traits', e.target.value)} placeholder="Ex.: +1 stealth, Enter combat" /></label>
+              {seletorMetadado('titulos', 'Títulos', TITULOS, opcoes?.titulos)}
+              {seletorMetadado('traits', 'Traits', ehCripta ? TRAITS_CRIPTA : TRAITS_LIBRARY, opcoes?.traits)}
             </div>
             <div className="carta-form-linha">
               <label className="catalogo-campo-caixa"><input type="checkbox" checked={valores.primeiraImpressao} onChange={(e) => atualizar('primeiraImpressao', e.target.checked)} /><span>First Print / primeira impressão</span></label>
@@ -650,14 +682,17 @@ export const CartaFormPage: React.FC = () => {
               <span className="carta-form-passo">5</span>
               <div>
                 <h3>Classificação</h3>
-                <p>Clique para marcar uma ou mais opções. Tudo aqui é opcional.</p>
+                <p>Selecione uma ou mais opções em cada campo.</p>
               </div>
             </header>
 
             <div className="carta-form-grupo">
               <div className="carta-form-grupo-cabecalho"><h4>Tipos de carta</h4>{botaoCadastroRapido('tiposCartaIds')}</div>
               <SeletorMultiplo
-                opcoes={opcoes?.tiposCarta ?? []}
+                rotulo="Tipos de carta"
+                opcoes={(opcoes?.tiposCarta ?? []).filter((item) =>
+                  valores.tiposCartaIds.includes(item.id) || (ehCripta ? !item.somenteLibrary : !item.somenteCripta),
+                )}
                 selecionados={valores.tiposCartaIds}
                 aoAlterar={(ids) => atualizar('tiposCartaIds', ids)}
                 vazio="Nenhum tipo de carta cadastrado."
@@ -666,6 +701,7 @@ export const CartaFormPage: React.FC = () => {
             <div className="carta-form-grupo">
               <div className="carta-form-grupo-cabecalho"><h4>Clãs</h4>{botaoCadastroRapido('clasIds')}</div>
               <SeletorMultiplo
+                rotulo="Clãs"
                 opcoes={opcoes?.clas ?? []}
                 selecionados={valores.clasIds}
                 aoAlterar={(ids) => atualizar('clasIds', ids)}
@@ -675,6 +711,7 @@ export const CartaFormPage: React.FC = () => {
             <div className="carta-form-grupo">
               <div className="carta-form-grupo-cabecalho"><h4>Disciplinas</h4>{botaoCadastroRapido('disciplinasIds')}</div>
               <SeletorMultiplo
+                rotulo="Disciplinas"
                 opcoes={opcoes?.disciplinas ?? []}
                 selecionados={valores.disciplinasIds}
                 aoAlterar={(ids) => atualizar('disciplinasIds', ids)}
@@ -682,23 +719,16 @@ export const CartaFormPage: React.FC = () => {
               />
             </div>
             <div className="carta-form-grupo">
-              <div className="carta-form-grupo-cabecalho"><h4>Idiomas</h4>{botaoCadastroRapido('idiomasIds')}</div>
-              <SeletorMultiplo
-                opcoes={opcoes?.idiomas ?? []}
-                selecionados={valores.idiomasIds}
-                aoAlterar={(ids) => atualizar('idiomasIds', ids)}
-                vazio="Nenhum idioma cadastrado."
+              <div className="carta-form-grupo-cabecalho"><h4>Impressões por edição e idioma</h4>{botaoCadastroRapido('idiomasIds')}</div>
+              <ImpressoesCarta
+                aoEnviar={setEnviandoImpressao}
+                valor={valores.impressoes}
+                idiomas={opcoes?.idiomas ?? []}
+                edicoes={combinarOpcoes(EDICOES, opcoes?.edicoes ?? [], valores.impressoes.map((item) => item.edicao))}
+                aoAlterar={(itens) => atualizar('impressoes', itens)}
               />
             </div>
-            <div className="carta-form-grupo">
-              <div className="carta-form-grupo-cabecalho"><h4>Estados</h4>{botaoCadastroRapido('estadosIds')}</div>
-              <SeletorMultiplo
-                opcoes={opcoes?.estados ?? []}
-                selecionados={valores.estadosIds}
-                aoAlterar={(ids) => atualizar('estadosIds', ids)}
-                vazio="Nenhum estado cadastrado."
-              />
-            </div>
+            <p className="pagina-catalogo-descricao">Os estados da carta são globais. O estoque define a quantidade disponível em cada estado.</p>
           </section>}
 
           <section className="card-catalogo carta-form-secao">
@@ -715,7 +745,7 @@ export const CartaFormPage: React.FC = () => {
         <Botao variante="fantasma" type="button" onClick={() => navegar('/admin/cartas')}         disabled={salvando}>
           Cancelar
         </Botao>
-        <Botao variante="primario" type="submit"         disabled={!tipoEscolhido || salvando}>
+        <Botao variante="primario" type="submit"         disabled={!tipoEscolhido || salvando || enviandoImpressao}>
                   {salvando ? 'Salvando...' : editando ? 'Salvar alterações' : 'Cadastrar carta'}
         </Botao>
       </div>

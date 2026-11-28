@@ -36,10 +36,15 @@ export function Select<T extends string | number>({
 }: PropriedadesSelect<T>) {
   const idLista = useId();
   const gatilhoRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLUListElement>(null);
+  const buscaRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const listaRef = useRef<HTMLUListElement>(null);
   const [aberto, setAberto] = useState(false);
   const [indiceAtivo, setIndiceAtivo] = useState(0);
   const [posicao, setPosicao] = useState<PosicaoMenu | null>(null);
+  const [busca, setBusca] = useState('');
+
+  const opcoesVisiveis = opcoes.filter((opcao) => opcao.rotulo.toLocaleLowerCase().includes(busca.trim().toLocaleLowerCase()));
 
   const indiceSelecionado = opcoes.findIndex((opcao) => opcao.valor === valor);
   const selecionada = indiceSelecionado >= 0 ? opcoes[indiceSelecionado] : null;
@@ -49,7 +54,7 @@ export function Select<T extends string | number>({
     if (!gatilho) return;
 
     const retangulo = gatilho.getBoundingClientRect();
-    const altura = Math.min(ALTURA_MAXIMA_MENU, opcoes.length * 40 + 12);
+    const altura = Math.min(ALTURA_MAXIMA_MENU, opcoesVisiveis.length * 40 + 64);
     const espacoAbaixo = window.innerHeight - retangulo.bottom;
     const paraCima = espacoAbaixo < altura + 12 && retangulo.top > espacoAbaixo;
 
@@ -59,11 +64,12 @@ export function Select<T extends string | number>({
       width: retangulo.width,
       paraCima,
     });
-  }, [opcoes.length]);
+  }, [opcoesVisiveis.length]);
 
   const abrir = () => {
     if (desabilitado) return;
     setIndiceAtivo(indiceSelecionado >= 0 ? indiceSelecionado : 0);
+    setBusca('');
     setAberto(true);
   };
 
@@ -107,11 +113,32 @@ export function Select<T extends string | number>({
 
   useEffect(() => {
     if (!aberto) return;
-    menuRef.current?.children[indiceAtivo]?.scrollIntoView({ block: 'nearest' });
-  }, [aberto, indiceAtivo]);
+    listaRef.current?.children[indiceAtivo]?.scrollIntoView({ block: 'nearest' });
+  }, [aberto, indiceAtivo, opcoesVisiveis.length]);
+
+  useEffect(() => {
+    if (aberto) requestAnimationFrame(() => buscaRef.current?.focus());
+  }, [aberto]);
+
+  const aoTeclarBusca = (evento: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evento.key === 'ArrowDown') {
+      evento.preventDefault();
+      setIndiceAtivo((atual) => Math.min(atual + 1, opcoesVisiveis.length - 1));
+    } else if (evento.key === 'ArrowUp') {
+      evento.preventDefault();
+      setIndiceAtivo((atual) => Math.max(atual - 1, 0));
+    } else if (evento.key === 'Enter' && opcoesVisiveis[indiceAtivo]) {
+      evento.preventDefault();
+      escolher(opcoesVisiveis[indiceAtivo]);
+    } else if (evento.key === 'Escape') {
+      evento.preventDefault();
+      evento.nativeEvent.stopImmediatePropagation();
+      fechar();
+    }
+  };
 
   const aoTeclar = (evento: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (desabilitado || opcoes.length === 0) return;
+    if (desabilitado || opcoesVisiveis.length === 0) return;
 
     if (!aberto) {
       if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(evento.key)) {
@@ -124,7 +151,7 @@ export function Select<T extends string | number>({
     switch (evento.key) {
       case 'ArrowDown':
         evento.preventDefault();
-        setIndiceAtivo((atual) => Math.min(atual + 1, opcoes.length - 1));
+        setIndiceAtivo((atual) => Math.min(atual + 1, opcoesVisiveis.length - 1));
         break;
       case 'ArrowUp':
         evento.preventDefault();
@@ -136,12 +163,12 @@ export function Select<T extends string | number>({
         break;
       case 'End':
         evento.preventDefault();
-        setIndiceAtivo(opcoes.length - 1);
+        setIndiceAtivo(opcoesVisiveis.length - 1);
         break;
       case 'Enter':
       case ' ':
         evento.preventDefault();
-        escolher(opcoes[indiceAtivo]);
+        escolher(opcoesVisiveis[indiceAtivo]);
         break;
       case 'Escape':
         // Evita que o Esc também feche o drawer/modal que contém o select
@@ -179,10 +206,8 @@ export function Select<T extends string | number>({
       {aberto &&
         posicao &&
         createPortal(
-          <ul
+          <div
             ref={menuRef}
-            id={idLista}
-            role="listbox"
             className="select-menu"
             style={{
               left: posicao.left,
@@ -193,7 +218,11 @@ export function Select<T extends string | number>({
                 : { top: posicao.top }),
             }}
           >
-            {opcoes.map((opcao, indice) => (
+            <input ref={buscaRef} className="select-busca" type="search" value={busca}
+              placeholder="Digite para buscar..." aria-label={`Buscar em ${rotuloAcessivel ?? 'opções'}`}
+              onChange={(evento) => { setBusca(evento.target.value); setIndiceAtivo(0); }} onKeyDown={aoTeclarBusca} />
+            <ul ref={listaRef} id={idLista} role="listbox">
+            {opcoesVisiveis.map((opcao, indice) => (
               <li
                 key={opcao.valor}
                 role="option"
@@ -209,7 +238,9 @@ export function Select<T extends string | number>({
                 {opcao.valor === valor && <Check size={15} />}
               </li>
             ))}
-          </ul>,
+            {!opcoesVisiveis.length && <li className="select-sem-resultados">Nenhuma opção encontrada</li>}
+            </ul>
+          </div>,
           document.body
         )}
     </>

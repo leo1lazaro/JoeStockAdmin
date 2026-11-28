@@ -1,3 +1,4 @@
+export interface ImpressaoCarta { id?: number; edicao: string; idiomaId: number; imagemUrl?: string | null }
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { clienteApi } from '@/app/config/apiConfig';
 
@@ -12,6 +13,8 @@ export interface FiltroOpcao {
   nome: string;
   sigla?: string | null;
   imagemUrl?: string | null;
+  somenteCripta?: boolean | null;
+  somenteLibrary?: boolean | null;
 }
 
 export interface CartaItem {
@@ -21,6 +24,8 @@ export interface CartaItem {
   nomeImpresso: string;
   textoCarta: string;
   imagemUrl?: string | null;
+  impressoes?: ImpressaoCarta[];
+  imagensIdiomas?: Record<number, string>;
   preco: number | null;
   estoque: number;
   ativo: boolean;
@@ -101,6 +106,8 @@ export interface CartaPayload {
   nomeImpresso?: string | null;
   textoCarta: string;
   imagemUrl?: string | null;
+  impressoes?: ImpressaoCarta[];
+  imagensIdiomas: Record<number, string>;
   versao?: string | null;
   categoria: string;
   origem: string;
@@ -137,7 +144,10 @@ export function useCriarCarta() {
       const resposta = await clienteApi.post<RespostaApi<CartaItem>>('/admin/cartas', payload);
       return resposta.data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'cartas'] }),
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['admin', 'cartas'] }),
+      queryClient.invalidateQueries({ queryKey: ['cartas', 'filtros'] }),
+    ]),
     meta: { desativarNotificacao: true },
   });
 }
@@ -194,7 +204,10 @@ export function useAtualizarCarta() {
       const resposta = await clienteApi.put<RespostaApi<CartaItem>>(`/admin/cartas/${id}`, payload);
       return resposta.data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin', 'cartas'] }),
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['admin', 'cartas'] }),
+      queryClient.invalidateQueries({ queryKey: ['cartas', 'filtros'] }),
+    ]),
     meta: { desativarNotificacao: true },
   });
 }
